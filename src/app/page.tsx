@@ -8,6 +8,8 @@ import Lenis from "lenis";
 import Navbar from "~/components/landingpage/Navbar";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { CARD_DATA, CLICK_ANIMATION, END_TEXT} from "~/constant/type";
+import { ProgressiveBlur } from "~/components/landingpage/pg-blur";
+import { BackgroundGrain } from "~/components/landingpage/bg-blur";
 
 
 
@@ -126,13 +128,13 @@ export default function HomePage() {
   // const card2Ref = useRef<HTMLDivElement>(null);
   // const card3Ref = useRef<HTMLDivElement>(null);
 
- 
+
 
   return (
     
     <main className="relative" ref={containerRef}>
-  <div className='background-grain' />
-
+	<BackgroundGrain />
+				<ProgressiveBlur />
       <Navbar />
       <div className="w-full bg-[#f4f1ea] text-black ">
         <section className="hero-section relative h-screen w-full overflow-hidden">
