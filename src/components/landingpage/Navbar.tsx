@@ -3,8 +3,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useIsMobile } from "~/hooks/use-mobile";
-import { NAVBAR_CONFIG, NAV_LINKS  , FOOTER_LINKS} from "~/constant/type";
-
+import { NAVBAR_CONFIG, NAV_LINKS, FOOTER_LINKS } from "~/constant/type";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,60 +29,67 @@ const Navbar = () => {
     return () => clearInterval(interval);
   }, [updateTime]);
 
-  useGSAP(() => {
-    const tl = gsap.timeline({ paused: true });
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({ paused: true });
 
-    tl.to(navRef.current, {
-      height: NAVBAR_CONFIG.expandedHeight,
-      duration: NAVBAR_CONFIG.animationDuration,
-      ease: "power3.inOut",
-    })
-    .to(".hamburger", { autoAlpha: 0, duration: 0.2 }, "<")
-    .fromTo(
-      ".close-btn",
-      { autoAlpha: 0, rotation: -90 },
-      { autoAlpha: 1, rotation: 0, duration: 0.2 },
-      "<0.1"
-    )
-    .to(".menu-content", { autoAlpha: 1, duration: 0.1 }, "<")
-    .fromTo(
-      ".menu-link",
-      { y: "100%" },
-      { 
-        y: "0%", 
-        stagger: NAVBAR_CONFIG.staggerDelay, 
-        duration: NAVBAR_CONFIG.animationDuration, 
-        ease: "power3.out" 
-      },
-      "-=0.2"
-    )
-    .fromTo(
-      ".footer", 
-      { autoAlpha: 0 }, 
-      { autoAlpha: 1, duration: 0.2 }, 
-      "-=0.2"
-    );
+      tl.to(navRef.current, {
+        height: NAVBAR_CONFIG.expandedHeight,
+        duration: NAVBAR_CONFIG.animationDuration,
+        ease: "power3.inOut",
+      })
+        .to(".hamburger", { autoAlpha: 0, duration: 0.2 }, "<")
+        .fromTo(
+          ".close-btn",
+          { autoAlpha: 0, rotation: -90 },
+          { autoAlpha: 1, rotation: 0, duration: 0.2 },
+          "<0.1",
+        )
+        .to(".menu-content", { autoAlpha: 1, duration: 0.1 }, "<")
+        .fromTo(
+          ".menu-link",
+          { y: "100%" },
+          {
+            y: "0%",
+            stagger: NAVBAR_CONFIG.staggerDelay,
+            duration: NAVBAR_CONFIG.animationDuration,
+            ease: "power3.out",
+          },
+          "-=0.2",
+        )
+        .fromTo(
+          ".footer",
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.2 },
+          "-=0.2",
+        );
 
-    const scrambleTargets = [
-      { selector: ".scramble-about", text: "ABOUT US", delay: "-=0.3" },
-      { selector: ".scramble-policy", text: "POLICY", delay: "<0.1" },
-      { selector: ".scramble-local", text: "LOCAL", delay: "<0.1" },
-    ];
+      const scrambleTargets = [
+        { selector: ".scramble-about", text: "ABOUT US", delay: "-=0.3" },
+        { selector: ".scramble-policy", text: "POLICY", delay: "<0.1" },
+        { selector: ".scramble-local", text: "LOCAL", delay: "<0.1" },
+      ];
 
-    scrambleTargets.forEach(({ selector, text, delay }) => {
-      tl.to(selector, {
-        duration: 1,
-        scrambleText: { 
-          text, 
-          chars: NAVBAR_CONFIG.scrambleChars, 
-          speed: 1 
-        },
-        onStart: () => void gsap.set(selector, { visibility: "visible" }),
-      }, delay);
-    });
+      scrambleTargets.forEach(({ selector, text, delay }) => {
+        tl.to(
+          selector,
+          {
+            duration: 1,
+            scrambleText: {
+              text,
+              chars: NAVBAR_CONFIG.scrambleChars,
+              speed: 1,
+            },
+            onStart: () => void gsap.set(selector, { visibility: "visible" }),
+          },
+          delay,
+        );
+      });
 
-    tlRef.current = tl;
-  }, { scope: navRef });
+      tlRef.current = tl;
+    },
+    { scope: navRef },
+  );
 
   useEffect(() => {
     if (!tlRef.current) return;
@@ -94,52 +100,65 @@ const Navbar = () => {
     }
   }, [isOpen]);
 
-
   return (
-    <div className="fixed md:w-[600px] md:px px-2 h-[60px] w-full top-6 left-1/2 -translate-x-1/2 flex  justify-center z-10">
+    <div className="md:px fixed top-6 left-1/2 z-10 flex h-[60px] w-full -translate-x-1/2 justify-center px-2 md:w-[600px]">
       <nav
         ref={navRef}
-        className="w-full rounded-xl relative bg-background text-[#F9F4EB] shadow-2xl flex flex-col overflow-hidden"
+        className="bg-background relative flex w-full flex-col overflow-hidden rounded-xl text-[#F9F4EB] shadow-2xl"
         aria-label="Main navigation"
       >
-        <div className="absolute top-0 left-0 w-full h-[60px] flex items-center justify-between px-6 z-20">
-          <a href="/" aria-label="Home" className="font-bold text-[1.2rem]">
-          Y
+        <div className="absolute top-0 left-0 z-20 flex h-[60px] w-full items-center justify-between px-6">
+          <a href="/" aria-label="Home" className="text-[1.2rem] font-bold">
+            Y
           </a>
 
-          <div className="relative w-6 h-6">
+          <div className="relative h-6 w-6">
             <button
               onClick={() => setIsOpen(true)}
-              className="hamburger absolute inset-0 flex flex-col justify-center gap-1.5 items-end"
+              className="hamburger absolute inset-0 flex flex-col items-end justify-center gap-1.5"
               aria-label="Open menu"
               aria-expanded={isOpen}
             >
-              <span className="w-6 h-0.5 bg-white block" aria-hidden="true"></span>
-              <span className="w-6 h-0.5 bg-white block" aria-hidden="true"></span>
+              <span
+                className="block h-0.5 w-6 bg-white"
+                aria-hidden="true"
+              ></span>
+              <span
+                className="block h-0.5 w-6 bg-white"
+                aria-hidden="true"
+              ></span>
             </button>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="close-btn absolute inset-0 flex items-center justify-center opacity-0 invisible"
+              className="close-btn invisible absolute inset-0 flex items-center justify-center opacity-0"
               aria-label="Close menu"
               tabIndex={isOpen ? 0 : -1}
             >
-              <span className="absolute w-6 h-0.5 bg-white rotate-45 block" aria-hidden="true"></span>
-              <span className="absolute w-6 h-0.5 bg-white -rotate-45 block" aria-hidden="true"></span>
+              <span
+                className="absolute block h-0.5 w-6 rotate-45 bg-white"
+                aria-hidden="true"
+              ></span>
+              <span
+                className="absolute block h-0.5 w-6 -rotate-45 bg-white"
+                aria-hidden="true"
+              ></span>
             </button>
           </div>
         </div>
 
-        <div className="menu-content flex-1 flex flex-col px-6 pt-18 pb-8 gap-10 opacity-0 invisible h-full">
-          <div className={`flex font-barlow flex-col gap-2 ${isMobile ? "text-[4rem]" : "text-[5rem]"}`}>
+        <div className="menu-content invisible flex h-full flex-1 flex-col gap-10 px-6 pt-18 pb-8 opacity-0">
+          <div
+            className={`font-barlow flex flex-col gap-2 ${isMobile ? "text-[4rem]" : "text-[5rem]"}`}
+          >
             {NAV_LINKS.map((item) => (
-              <div 
-                key={item} 
-                className="overflow-hidden h-[5rem] flex items-center"
+              <div
+                key={item}
+                className="flex h-[5rem] items-center overflow-hidden"
               >
                 <a
                   href={`#${item.toLowerCase()}`}
-                  className="menu-link uppercase leading-[0.85] block translate-y-full will-change-transform hover:opacity-70 transition-opacity"
+                  className="menu-link block translate-y-full leading-[0.85] uppercase transition-opacity will-change-transform hover:opacity-70"
                   tabIndex={isOpen ? 0 : -1}
                 >
                   {item}
@@ -148,22 +167,28 @@ const Navbar = () => {
             ))}
           </div>
 
-          <footer className="footer mt-auto flex justify-between items-end text-[15px] font-mono opacity-60 uppercase tracking-widest text-gray-400">
+          <footer className="footer mt-auto flex items-end justify-between font-mono text-[15px] tracking-widest text-gray-400 uppercase opacity-60">
             <div className="flex gap-6">
               {FOOTER_LINKS.map(({ text, className }) => (
-                <a 
+                <a
                   key={text}
                   href={`#${text.toLowerCase().replace(" ", "-")}`}
-                  className="flex items-center gap-1 hover:text-white transition-colors"
+                  className="flex items-center gap-1 transition-colors hover:text-white"
                   tabIndex={isOpen ? 0 : -1}
                 >
-                  <span className="text-[8px]" aria-hidden="true">▶</span>
+                  <span className="text-[8px]" aria-hidden="true">
+                    ▶
+                  </span>
                   <span className={`${className} invisible`}>{text}</span>
                 </a>
               ))}
             </div>
-            
-            <div className="hidden md:flex gap-2" aria-live="polite" aria-atomic="true">
+
+            <div
+              className="hidden gap-2 md:flex"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               <time dateTime={new Date().toISOString()}>{time}</time>
               <span className="scramble-local invisible">LOCAL</span>
             </div>

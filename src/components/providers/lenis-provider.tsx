@@ -1,14 +1,12 @@
-'use client';
-
-import { ReactLenis, useLenis } from 'lenis/react';
-import { ReactNode, useEffect } from 'react';
+"use client";
+import { ReactLenis, useLenis } from "lenis/react";
+import { type ReactNode, useEffect } from "react";
 
 interface LenisProviderProps {
   children: ReactNode;
   scrollEnabled?: boolean;
 }
 
-/** Example of controlling the ability to scroll w/ Lenis */
 function LenisController({ scrollEnabled }: { scrollEnabled: boolean }) {
   const lenis = useLenis();
 
